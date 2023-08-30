@@ -1,16 +1,23 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export const PostCard = () => {
+interface Props{
+    isComments: boolean
+}
+
+export const PostCard = ({isComments}: Props) => {
 
     const isMedia = true;
 
   return (
-<div className="relative flex p-2 max-md:pr-5 border-b-[1px] border-neutral-800">
+<Link href="/post/jkahs" className="relative flex p-2 max-md:pr-5 border-b-[1px] border-neutral-800">
     <div className="h-full w-[100px]">
-        <div className="relative max-md:w-8 max-md:h-8 h-10 object-contain">
+        <div className="relative max-md:w-8 max-md:h-8 w-14 h-10 object-contain">
             <Image fill src="/images/logo.svg" alt="username"/>
         </div>
+        {isComments && (
+            <div className="h-[90%] w-[2px] bg-neutral-700 absolute md:left-8 left-6"/>
+        )}
     </div>
     {/* Author section */}
     <div className="relative">
@@ -57,6 +64,6 @@ export const PostCard = () => {
 
     </div>
 
-</div>
+</Link>
   )
 }

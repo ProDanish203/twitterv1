@@ -2,7 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply h-full min-h-screen bg-black;
+}
 
-body{
-  @apply h-full min-h-screen bg-black
+img {
+  user-select: none;
+  pointer-events: none;
+}
+
+.glassmorphism {
+  backdrop-filter: blur(8px) saturate(190%);
+  -webkit-backdrop-filter: blur(8px) saturate(190%);
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 12px 12px 0 0;
+  border: 1px solid rgba(209, 213, 219, 0.18);
+  -webkit-border-radius: 12px 12px 0 0;
+  -moz-border-radius: 12px 12px 0 0;
+  -ms-border-radius: 12px 12px 0 0;
+  -o-border-radius: 12px 12px 0 0;
+}
+
+/* Main Loader Style */
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  margin: 8px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
