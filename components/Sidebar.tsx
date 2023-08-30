@@ -4,9 +4,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { fetchUser } from "@/lib/actions/User";
-import { UserData } from "@/utils/types";
+import {fetcher} from "@/lib/fetcher";
+import useSWR from "swr";
 
 export const Sidebar = () => {
 
@@ -14,20 +13,8 @@ export const Sidebar = () => {
     const router = useRouter();
     const {data: session} = useSession()
 
-    const [user, setUser] = useState<UserData>();
-    const getUser = async () => {
-        try{
-            //@ts-ignore
-            const fetchedUser = await fetchUser(session?.user.id)
-            //@ts-ignore
-            setUser(fetchedUser);
-        }catch(error){
-            console.log(error);
-        }
-    }
-    useEffect(() => {
-        if(session) getUser();
-    }, [session])
+    //@ts-ignore
+    const {data, mutate, isLoading, error} = useSWR(`/api/users/${session?.user?.id}`, fetcher);
 
     const handleLogout = async () => {
         await signOut();
@@ -42,13 +29,13 @@ export const Sidebar = () => {
             <Link href="/" className="relative max-md:w-10 max-md:h-10 w-14 h-14 object-cover">
                 <Image src="/images/logo.svg" fill alt="X" className="object-cover"/>
             </Link> 
-            {user &&  (
+            {data &&  (
             <>
             <div className="flex flex-col gap-10 lg:items-start w-full items-center mt-10 max-lg:pr-2">
                 {navItems.map((link) => {
                     const isActive = (pathName.includes(link.title) && link.path.length > 1) || pathName === link.path;
                     //@ts-ignore
-                    if((link.path === "/profile") && user) link.path = `/profile/${user.id}`;
+                    if((link.path === "/profile") && data) link.path = `/profile/${data.user.id}`;
                     
                     return (
                     <Link key={link.path} href={link.path || "/"} className={`${isActive ? "text-primary" : "text-text"} flex items-center gap-5 text-lg`}>
@@ -78,18 +65,18 @@ export const Sidebar = () => {
             
 
         </div>
-        {user && (
+        {data && (
         <Link href="/" className="flex items-center gap-3">
             <div className="relative max-md:w-10 max-md:h-10 w-12 h-12 object-cover">
                 {/* @ts-ignore */}
-                <Image src={user?.image || ""} fill alt="X" className="object-cover rounded-full"/>
+                <Image src={data.user.image || ""} fill alt="X" className="object-cover rounded-full"/>
             </div>
 
             <div className="max-lg:hidden">
                 {/* @ts-ignore */}
-                <p className="text-text">{user?.name}</p>
+                <p className="text-text">{data.user.name}</p>
                 {/* @ts-ignore */}
-                <p className="text-placeolder text-sm">{user?.username}</p>
+                <p className="text-placeolder text-sm">{data.user.username}</p>
             </div>
         </Link>
         )}

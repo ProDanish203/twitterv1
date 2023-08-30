@@ -2,42 +2,31 @@
 import { Header } from "@/components/Header";
 import { PostCard } from "@/components/cards/PostCard";
 import { ComposeXheader } from "@/components/forms/ComposeXheader";
-import { fetchUser } from "@/lib/actions/User";
-import { UserData } from "@/utils/types";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { fetcher } from "@/lib/fetcher";
 
 export default function Home() {
 
   const {data: session} = useSession();
-  
-  const [user, setUser] = useState<UserData>();
-  console.log(user);
-  const getUser = async () => {
-    //@ts-ignore
-    const fetchedUser = await fetchUser(session?.user.id)
-    //@ts-ignore
-    setUser(fetchedUser);
-  }
-  
-  useEffect(() => {
-    if(session) getUser;
-  }, [session, user])
-  
+  //@ts-ignore
+  const {data, mutate, isLoading, error} = useSWR(`/api/users/${session?.user?.id}`, fetcher);
+
   if(!session?.user) return null;
 
   
   return (
     
   <section className="py-2">
-  
-    <div>
+    <ToastContainer/>
+    <div className="relative">
       <Header label="Home" isBack={false}/>
     </div>
       
     <div className="max-sm:hidden">      
-      {/* <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={user?.image} authorId={user?.id}/> */}
+      <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={data?.user.image} authorId={data?.user.id} authorUsername={data?.user.username}/>
     </div>
       
     <PostCard isComments={false}/>

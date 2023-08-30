@@ -35,15 +35,13 @@ export default async function RootLayout({
         <Provider>
 
       <AuthProvider>
-
-
         <div className='container h-screen w-screen mx-auto'>
 
         <div className='relative max-w-7xl flex mx-auto w-full'>
           <div className='max-xs:hidden'>
             <Sidebar/>
           </div>
-          <div className='relative md:flex-1'>
+          <div className='relative flex-1'>
             <div className='pt-24'>
               {children}
             </div>
