@@ -6,6 +6,7 @@ import useSWR from "swr";
 import loading from './loading';
 import { ProfileHeader } from '@/components/ProfileHeader';
 import { PostCard } from '@/components/cards/PostCard';
+import { ToastContainer } from 'react-toastify';
 
 const Profile = ({params}: {params: {id:string}}) => {
 
@@ -17,12 +18,13 @@ const Profile = ({params}: {params: {id:string}}) => {
 
   return (
   <section className='w-full relative'>
+    <ToastContainer/>
     <div>
       {/* @ts-ignore */}
       <Header isBack={true} label={session?.user?.id === data?.user.id ? `Your Profile`: `${data.user.username}'s Profile`}/>
     </div>
     {/* @ts-ignore */}
-    <ProfileHeader profilePicture={data?.user.image} username={data?.user.username} name={data?.user.name} bio={data?.user.bio} currentUserProfile={session?.user?.id === data?.user.id} createdAt={data?.user.createdAt} followingCount={data?.user.followingIds.length} followersCount={data?.user.followersIds.length} userId={data?.user.id}/>
+    <ProfileHeader profilePicture={data?.user.profileImage ? data?.user.profileImage : data?.user.image} username={data?.user.username} name={data?.user.name} bio={data?.user.bio} currentUserProfile={session?.user?.id === data?.user.id} createdAt={data?.user.createdAt} followingCount={data?.user.followingIds.length} followersCount={data?.user.followersIds.length} userId={data?.user.id} banner={data?.user.coverImage}/>
 
     {
       data?.user?.posts?.length > 0 ? 

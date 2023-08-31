@@ -18,7 +18,7 @@ const Compose = () => {
           <Header isBack={true} label="Compose"/>
         </div>
         <div className='max-xs:w-screen w-full'>
-          <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={data?.user.image} authorId={data?.user.id} authorUsername={data?.user.username}/>
+          <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={data?.user.profileImage ? data?.user.profileImage : data?.user.image} authorId={data?.user.id} authorUsername={data?.user.username}/>
         </div>
     </section>
   )

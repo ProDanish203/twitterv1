@@ -1,4 +1,4 @@
-"use clients"
+"use client"
 
 interface Props{
     dark: boolean;

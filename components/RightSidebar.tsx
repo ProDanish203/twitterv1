@@ -30,7 +30,7 @@ export const RightSidebar = () => {
 
                     <div className='flex items-center gap-2'>
                         <Link href={`/profile/${user.id}`} className='relative w-10 h-10 object-cover'>
-                            <Image src={user.image || "/images/dummyUser.png"} className='rounded-full object-cover' fill alt='username'/>
+                            <Image src={user.profileImage ? user.profileImage : user.image || "/images/dummyUser.png"} className='rounded-full object-cover' fill alt='username'/>
                         </Link>
 
                         <div>

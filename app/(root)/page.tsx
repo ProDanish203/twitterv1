@@ -26,7 +26,7 @@ export default function Home() {
     </div>
       
     <div className="max-sm:hidden">      
-      <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={data?.user.image} authorId={data?.user.id} authorUsername={data?.user.username}/>
+      <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={data?.user.profileImage ? data?.user.profileImage :data?.user.image} authorId={data?.user.id} authorUsername={data?.user.username}/>
     </div>
       
     <PostCard isComments={false}/>

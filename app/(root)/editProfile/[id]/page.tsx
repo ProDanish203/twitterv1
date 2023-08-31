@@ -9,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import { Header } from '@/components/Header';
 import Input from '@/components/helpers/Input';
 import Image from 'next/image';
-import { Loader } from '@/components/helpers/Loader';
+import { Loader } from "@/components/helpers/Loader";
+import { ImageUpload } from '@/components/helpers/ImageUpload';
 
 const EditProfile = ({params}: {params: {id:string}}) => {
 
@@ -22,13 +23,12 @@ const EditProfile = ({params}: {params: {id:string}}) => {
     }
     const {data, mutate, isLoading, error} = useSWR(`/api/users/${id}`, fetcher);
     if(isLoading) return loading();
-
+    console.log(data);
     const [name, setName] = useState("")
     const [username, setUsername] = useState("")
     const [profileImage, setProfileImage] = useState("")
     const [coverImage, setCoverImage] = useState("")
     const [bio, setBio] = useState("")
-    const [location, setLocation] = useState("")
     const [loader, setLoader] = useState(false);
 
     useEffect(() => {
@@ -37,7 +37,6 @@ const EditProfile = ({params}: {params: {id:string}}) => {
         setProfileImage(data?.user.profileImage);
         setCoverImage(data?.user.coverImage);
         setBio(data?.user.bio);
-        setLocation(data?.user.location);
     }, [])
 
     const handleEdit = async (e: React.FormEvent) => {
@@ -50,7 +49,21 @@ const EditProfile = ({params}: {params: {id:string}}) => {
 
         try{
             setLoader(true);
-            console.log(name)
+
+            const response = await fetch(`/api/users/edit/${id}`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    name, username, bio, 
+                    profileImage, coverImage
+                })
+            })
+            
+            if(!response.ok) return toast.error("Unable to edit profile");
+            else{
+                toast.success("Profile updated successfully");
+                router.push(`/profile/${id}`);
+            }
+
             setLoader(false);
         }catch(error){
             toast.error("Unable to edit profile");
@@ -68,16 +81,21 @@ const EditProfile = ({params}: {params: {id:string}}) => {
         <form onSubmit={handleEdit} className='md:px-7 px-5 py-7'>
 
             <div className='mb-4'>
-                <div className='relative md:w-24 md:h-24 w-20 h-20 object-contain'>
-                    <Image src={data?.user.image || "/images/dummyUser.png"} fill alt={data?.user.username} className='rounded-full object-cover'/>
-                    <label htmlFor='profilePicture' className='absolute flex items-center justify-center top-0 left-0 w-full h-full bg-gray-500 rounded-full opacity-60 z-10 cursor-pointer'>
-                        <i className='fas fa-camera text-text text-xl'></i>
-                    </label>
+                <ImageUpload
+                value={profileImage}
+                onChange={(image:any) => setProfileImage(image)}
+                disabled={loader}
+                label="Upload Profile Image"
+                />  
+            </div>
 
-                    <input type="file" className='hidden' id='profilePicture'
-                    accept=''
-                    />
-                </div>
+            <div className='mb-4'>
+                <ImageUpload
+                value={coverImage}
+                onChange={(image:any) => setCoverImage(image)}
+                disabled={loader}
+                label="Upload Cover Image"
+                />
             </div>
 
             <Input placeholder='Name' label="Name" value={name} onChange={(e: any) => setName(e.target.value)}/>
@@ -89,9 +107,8 @@ const EditProfile = ({params}: {params: {id:string}}) => {
                 placeholder='Bio'
                 ></textarea>
             </div>
-            <Input placeholder='Country' label="Country" value={location} onChange={(e: any) => setLocation(e.target.value)}/>
 
-            <button type='submit' className='text-text bg-primary rounded-full px-5 py-2 mt-4 max-w-[150px] w-full shadow-md'>{loader ? "Saving..." : "Save"}</button>
+            <button type='submit' disabled={loader} className='text-text bg-primary disabled:opacity-60 rounded-full px-5 py-2 mt-4 max-w-[150px] w-full shadow-md'>{loader ? <Loader dark={false}/> : "Save"}</button>
 
         </form>
     </section>

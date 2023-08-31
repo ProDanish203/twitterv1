@@ -10,6 +10,7 @@ export const GET = async (req) => {
                 name:true,
                 username: true,
                 image: true,
+                profileImage: true,
                 id:true
             }
         });

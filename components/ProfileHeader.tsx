@@ -1,7 +1,10 @@
+"use client"
 import Image from 'next/image';
 import React from 'react'
 import { format } from "date-fns";
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface Props{
     profilePicture: string;
@@ -13,26 +16,44 @@ interface Props{
     followingCount: number
     followersCount: number;
     userId: string;
-}
+    banner: string;
+}   
 
-export const ProfileHeader = ({profilePicture, name, username, bio, currentUserProfile, createdAt, followersCount, followingCount, userId}: Props) => {
+export const ProfileHeader = ({profilePicture, name, username, bio, currentUserProfile, createdAt, followersCount, followingCount, userId, banner}: Props) => {
 
+    const router = useRouter();
     const formattedDate = format(new Date(createdAt), 'MMMM yyyy')
+
+    const handleLogout = async () => {
+        await signOut();
+        router.push("/signin");
+    }
 
   return (
     <div className='w-full border-b-[1px] border-neutral-800 '>
         <div className='sm:h-[200px] h-[150px] bg-neutral-700 relative w-full'>
-                <Image src='/images/picture.jpg' fill alt='jkhae' className='object-cover'/>
+            {banner && (
+                <Image src={banner} fill alt='jkhae' className='object-cover'/>
+            )}
             <div className='absolute -bottom-10 left-0 right-0 flex items-center justify-between gap-10 sm:px-7 px-5'>
                 <div className='relative md:w-24 md:h-24 w-20 h-20 object-contain'>
                     <Image src={profilePicture || "/images/dummyUser.png"} fill alt={username} className='rounded-full object-cover'/>
                 </div>
 
-                <div className='sm:mt-10 mt-16'>
+                <div className='sm:mt-10 mt-16 flex items-center gap-3'>
                 {currentUserProfile ? (
+                    <>
+                    <button className="xs:hidden flex items-center gap-5 text-md text-text"
+                    onClick={handleLogout}
+                    >
+                        <i className="fa-solid fa-arrow-right-from-bracket text-2xl"></i>
+                    </button>
+
                     <Link href={`/editProfile/${userId}`}>
                         <button className='rounded-full px-4 py-2 text-text bg-transparent transition-all hover:bg-text hover:text-bg border-[1px] border-text max-sm:text-sm max-sm:py-1 max-sm:px-3 shadow-sm'>Edit Profile</button>
                     </Link>
+                    
+                    </>
                     ) : (
                         <div className='flex items-center gap-3'>
                     <i className='far fa-message text-text text-lg cursor-pointer'></i>

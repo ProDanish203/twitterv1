@@ -69,7 +69,7 @@ export const Sidebar = () => {
         <Link href="/" className="flex items-center gap-3">
             <div className="relative max-md:w-10 max-md:h-10 w-12 h-12 object-cover">
                 {/* @ts-ignore */}
-                <Image src={data.user.image || ""} fill alt="X" className="object-cover rounded-full"/>
+                <Image src={data?.user.profileImage ? data.user.profileImage : data.user.image || ""} fill alt="X" className="object-cover rounded-full"/>
             </div>
 
             <div className="max-lg:hidden">
