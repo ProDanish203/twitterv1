@@ -16,15 +16,15 @@ export const Header = ({label, isBack}: Props) => {
     }, [router]);
 
   return (
-    <div className="fixed top-0 w-full bg-bg z-10">
-        <div className="flex items-center gap-4 p-7 border-b-[1px] border-neutral-800 w-full">
+    <div className="fixed top-0 w-full bg-bg z-20">
+        <div className="flex items-center gap-4 sm:p-7 p-5 border-b-[1px] border-neutral-800 w-full">
             {isBack && (
             <div onClick={handleReturn} className="cursor-pointer">
                 <i className="fas fa-arrow-left text-xl text-text"></i>
             </div>
             )}
 
-            <p className="text-text font-semibold text-xl">{label}</p>
+            <p className="text-text font-semibold sm:text-xl text-lg">{label}</p>
         </div>
     </div>
   )

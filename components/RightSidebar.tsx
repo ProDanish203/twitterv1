@@ -26,7 +26,7 @@ export const RightSidebar = () => {
                 <div className='flex flex-col gap-2'>
                 {data && data.length > 0 && 
                 data.map((user:any) => (
-                <div className='flex items-center w-full justify-between gap-3 px-5 py-2 hover:bg-placeolder transition'>
+                <div key={user.id} className='flex items-center w-full justify-between gap-3 px-5 py-2 hover:bg-placeolder transition'>
 
                     <div className='flex items-center gap-2'>
                         <Link href={`/profile/${user.id}`} className='relative w-10 h-10 object-cover'>

@@ -42,7 +42,7 @@ export default async function RootLayout({
             <Sidebar/>
           </div>
           <div className='relative flex-1'>
-            <div className='pt-24'>
+            <div className='pt-20'>
               {children}
             </div>
           </div>
