@@ -15,8 +15,6 @@ export const PUT = async (req, {params}) => {
                 name, username, bio, profileImage, coverImage
             }
         })
-
-        console.log(updateUser);
         
         if(!updateUser) return new Response(`Unable to update profile`, {status: 404});
 

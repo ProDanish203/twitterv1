@@ -3,17 +3,19 @@ import Link from "next/link"
 
 interface Props{
     isComments: boolean
+    isMedia: boolean;
+    data: any
 }
 
-export const PostCard = ({isComments}: Props) => {
-
-    const isMedia = true;
+export const PostCard = ({isComments, isMedia, data}: Props) => {
 
   return (
-<Link href="/post/jkahs" className="relative flex p-2 max-md:pr-5 border-b-[1px] border-neutral-800">
+<Link href="/post/jkahs" className="relative flex p-2 max-md:pr-5 border-b-[1px] border-neutral-800 overflow-hidden">
     <div className="h-full w-[100px]">
-        <div className="relative max-md:w-8 max-md:h-8 w-14 h-10 object-contain">
-            <Image fill src="/images/logo.svg" alt="username"/>
+        <div className="relative max-md:w-8 max-md:h-8 w-12 h-12 object-contain">
+            <Image fill src={data.User.profileImage ? data.User.profileImage : data.User.image || `/images/dummyUser.png`} alt="username"
+            className="rounded-full object-cover"
+            />
         </div>
         {isComments && (
             <div className="h-[90%] w-[2px] bg-neutral-700 absolute md:left-8 left-6"/>
@@ -23,12 +25,12 @@ export const PostCard = ({isComments}: Props) => {
     <div className="relative">
 
         <div className="flex items-center gap-2 w-full">
-            <span className="text-text font-semibold">Name</span> 
-            <span className="text-sm text-placeolder">@Username</span>
+            <span className="text-text font-semibold">{data.User.name}</span> 
+            <span className="text-sm text-placeolder">@{data.User.username}</span>
             <span className="text-sm text-placeolder">8h</span>
         </div>
 
-        <p className="text-text md:text-[15px] text-sm my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus animi dignissimos mollitia laboriosam nemo fugiat est asperiores ipsam tempore saepe!</p>
+        <p className="text-text md:text-[15px] text-sm my-2">{data.body}</p>
 
         {isMedia && (
         <div className="relative max-w-[400px] h-[500px] mt-3 mb-4">
@@ -42,12 +44,12 @@ export const PostCard = ({isComments}: Props) => {
 
             <div className="text-placeolder">
                 <i className="far fa-comment mr-2"></i>
-                <span>10</span>
+                <span>{data.comments.length}</span>
             </div>
 
             <div className="text-placeolder">
                 <i className="far fa-heart mr-2"></i>
-                <span>10</span>
+                <span>{data.likesId.length}</span>
             </div>
 
             <div className="text-placeolder">
