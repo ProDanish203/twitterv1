@@ -15,7 +15,7 @@ export const Sidebar = () => {
 
     //@ts-ignore
     const {data, mutate, isLoading, error} = useSWR(`/api/users/${session?.user?.id}`, fetcher);
-
+    console.log(data)
     const handleLogout = async () => {
         await signOut();
         router.push("/signin");

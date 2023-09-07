@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Loader } from "../helpers/Loader";
+import { useRouter } from "next/navigation";
 
 interface Props{
   placeholder: string;
@@ -17,6 +18,8 @@ export const ComposeXheader = ({placeholder, btnTitle, authorImg, authorId, auth
   const [text, setText] = useState("")
   const [loader, setLoader] = useState(false);
 
+  const router = useRouter();
+
   const handlePost = async (e: React.FormEvent) => {
     e.preventDefault();
     try{
@@ -29,18 +32,17 @@ export const ComposeXheader = ({placeholder, btnTitle, authorImg, authorId, auth
           author: authorId
         }),
       })
-      console.log(response);
       setLoader(false);
       if(!response.ok) return toast.error("An error occured creating the post");
       else{
         setText("");
+        router.push("/");
         return toast.success("Post created")
       } 
 
     }catch(error){
       toast.error("Something went wrong");
       setLoader(false);
-      console.log(error);
     }
   }
 

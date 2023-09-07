@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import { fetcher } from '@/lib/fetcher'
 import useSWR from "swr";
 import Link from 'next/link'
+import {followUser} from "@/lib/followUser";
 
 export const RightSidebar = () => {
 
@@ -13,6 +14,14 @@ export const RightSidebar = () => {
     //@ts-ignore
     const {data, mutate, isLoading, error} = useSWR(`/api/users`, fetcher);
     
+    const handleFollow = async (id:string) => {
+        //@ts-ignore
+        const {isFollowing, toggleFollow} = followUser(id, session?.user.id)
+        toggleFollow()
+    }
+
+
+
   return (
     <div className='h-screen lg:min-w-[200px] max-w-[350px] pt-28 lg:w-full w-fit sticky p-7 top-0 left-0 border-l-[1px] border-neutral-800 overflow-hidden'>
         
@@ -39,7 +48,9 @@ export const RightSidebar = () => {
                         </div>
                     </div>
 
-                    <button className='rounded-full py-1 px-3 bg-white text-bg '>Follow</button>
+                    <button className='rounded-full py-1 px-3 bg-white text-bg ' 
+                    // onClick={() => handleFollow(user.id)}
+                    >Follow</button>
                 </div>
                 ))
                 }

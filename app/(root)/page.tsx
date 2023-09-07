@@ -1,12 +1,12 @@
 "use client"
 import { Header } from "@/components/Header";
-import { PostCard } from "@/components/cards/PostCard";
 import { ComposeXheader } from "@/components/forms/ComposeXheader";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { fetcher } from "@/lib/fetcher";
+import { Feed } from "@/components/Feed";
 
 export default function Home() {
 
@@ -29,10 +29,7 @@ export default function Home() {
       <ComposeXheader btnTitle="Post" placeholder="What is happening?!" authorImg={data?.user.profileImage ? data?.user.profileImage :data?.user.image} authorId={data?.user.id} authorUsername={data?.user.username}/>
     </div>
       
-    <Feed currentUser={}/>
-    <PostCard isComments={false}/>
-    <PostCard isComments={false}/>
-    <PostCard isComments={false}/>
+    <Feed currentUser={data?.user.id}/>
 
   </section>
   )
